@@ -24,7 +24,8 @@ public class CountryDao implements Dao<Country>{
             if (rs.next())
                 country = new Country(
                         rs.getInt("id"),
-                        rs.getString("name"));
+                        rs.getString("name"),
+                        rs.getString("flag"));
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +41,8 @@ public class CountryDao implements Dao<Country>{
             while (rs.next())
                 countries.add(new Country(
                         rs.getInt("id"),
-                        rs.getString("remaining_tickets")));
+                        rs.getString("remaining_tickets"),
+                        rs.getString("flag")));
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +54,9 @@ public class CountryDao implements Dao<Country>{
     public boolean add(Country country) {
         int res = 0;
         try {
-            res = stm.executeUpdate("INSERT INTO countries (name) VALUES ('"+country.name+"')");
+            res = stm.executeUpdate("INSERT INTO countries (name, flag) VALUES ('"+
+                    country.name + "','" +
+                    country.flagUrl + "')");
             System.out.println("inserted " + res);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +81,8 @@ public class CountryDao implements Dao<Country>{
         int res = 0;
         try {
             res = stm.executeUpdate("UPDATE countries SET " +
-                    "name ='"  + country.name +
+                    "  name ='"  + country.name +
+                    "',flag ='" +country.flagUrl +
                     "' WHERE countries.id=" + country.id);
             System.out.println("updated " + res);
         } catch (SQLException e) {

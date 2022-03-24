@@ -5,6 +5,7 @@ import Misc.LoginToken;
 import Poco.Administrator;
 import Poco.AirlineCompany;
 import Poco.Customer;
+import Poco.User;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class AdministratorFacade extends AnonymousFacade {
         user.userRole = 2;
         this.create_new_user(user);
         user = this.userDao.getUserByUsername(user.username);
-        customer.userId = user.id;
+        airline.userId = user.id;
         return this.airlineCompanyDao.add(airline);
     }
 
@@ -91,7 +92,7 @@ public class AdministratorFacade extends AnonymousFacade {
         user.userRole = 3;
         this.create_new_user(user);
         user = this.userDao.getUserByUsername(user.username);
-        customer.userId = user.id;
+        administrator.userId = user.id;
         return this.administratorDao.add(administrator);
     }
 
@@ -112,7 +113,7 @@ public class AdministratorFacade extends AnonymousFacade {
             return false;
         }
         if(this.airlineCompanyDao.remove(airline)){
-            this.userDao.remove(airline.userId);
+            this.userDao.remove(this.userDao.get(airline.userId));
             return true;
         }
         return false;
@@ -135,7 +136,7 @@ public class AdministratorFacade extends AnonymousFacade {
             return false;
         }
         if(this.customerDao.remove(customer)){
-            this.userDao.remove(customer.userId);
+            this.userDao.remove(this.userDao.get(customer.userId));
             return true;
         }
         return false;
@@ -154,7 +155,7 @@ public class AdministratorFacade extends AnonymousFacade {
             return false;
         }
         if(this.administratorDao.remove(administrator)){
-            this.userDao.remove(administrator.userId);
+            this.userDao.remove(this.userDao.get(administrator.userId));
             return true;
         }
         return false;

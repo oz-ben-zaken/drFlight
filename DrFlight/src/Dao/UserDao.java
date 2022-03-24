@@ -27,7 +27,8 @@ public class UserDao implements Dao<User>{
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        rs.getInt("user_role"));
+                        rs.getInt("user_role"),
+                        rs.getString("thumbnail"));
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,7 +47,8 @@ public class UserDao implements Dao<User>{
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        rs.getInt("user_role")));
+                        rs.getInt("user_role"),
+                        rs.getString("thumbnail")));
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,12 +59,13 @@ public class UserDao implements Dao<User>{
     public boolean add(User user) {
         int res = 0;
         try {
-            res = stm.executeUpdate("INSERT INTO users (username,password,email,user_role) " +
+            res = stm.executeUpdate("INSERT INTO users (username,password,email,user_role,thumbnail) " +
                     "VALUES ('" +
                     user.username + "','" +
                     user.password + "','" +
                     user.email + "'," +
-                    user.userRole + "," + ")");
+                    user.userRole + ",'" +
+                    user.imgUrl + "')");
             System.out.println("inserted " + res);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,7 +94,8 @@ public class UserDao implements Dao<User>{
                     "',password = '"  + user.password +
                     "',email = '"     + user.email +
                     "',user_role = " + user.userRole +
-                    " WHERE users.id ="+user.id);
+                    ",user_role = '" + user.imgUrl +
+                    "' WHERE users.id ="+user.id);
             System.out.println("updated " + res);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,7 +132,8 @@ public class UserDao implements Dao<User>{
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        rs.getInt("user_role"));
+                        rs.getInt("user_role"),
+                        rs.getString("thumbnail"));
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
