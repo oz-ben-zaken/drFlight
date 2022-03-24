@@ -1,15 +1,23 @@
 package Poco;
 
+import java.io.File;
+
 public class Country implements Poco{
     public int id;
     public String name;
-    public String flagUrl = "\\resources\\FlagImg\\def_flag";;
+    public String flagUrl = "src\\resources\\FlagImg\\def_flag.jpg";;
 
-    public Country(int id, String name, String url) {
+    public Country(int id, String name, String imgName) {
         this.id = id;
         this.name = name;
-        if(!(url == null))
-            this.flagUrl = url;
+        if(!name.isEmpty()){
+            String url= "src\\resources\\FlagImg\\"+imgName;
+            File file = new File(url);
+            if (file.exists()){
+                this.flagUrl = url;
+                System.out.println("you are not an idiot, good job");
+            }
+        }
     }
 
     @Override
@@ -17,6 +25,7 @@ public class Country implements Poco{
         return "Country{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", url='" + flagUrl + '\'' +
                 '}';
     }
 }

@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class Main {
     public static void main(String[] args) {
-
+/*
         var foo = new AirlineCompanyDao();
         for (var i : foo.getAll())
             System.out.println(i);
@@ -22,6 +22,8 @@ public class Main {
         FacadeBase fb = af.Login("oz", "oz123");
         //System.out.println(fb.toString());
         Timestamp date = Timestamp.valueOf("2022-03-27 00:00:00");
-
+*/
+        Country country=new Country(3,"hhhhhhhhh","def_flag.jpg");
+        System.out.println(country);
     }
 }
