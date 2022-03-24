@@ -37,7 +37,7 @@ public class AdministratorFacade extends AnonymousFacade {
      * @param loginToken
      * @return True if succeeds or false if not.
      */
-    public boolean add_airline(AirlineCompany airline, LoginToken loginToken) {
+    public boolean add_airline(AirlineCompany airline, User user, LoginToken loginToken) {
         if (!this.loginToken.toString().equals(loginToken.toString())) {
             printAuthenticationError();
             return false;
@@ -46,6 +46,10 @@ public class AdministratorFacade extends AnonymousFacade {
             System.out.println("country id must be a positive number");
             return false;
         }
+        user.userRole = 2;
+        this.create_new_user(user);
+        user = this.userDao.getUserByUsername(user.username);
+        customer.userId = user.id;
         return this.airlineCompanyDao.add(airline);
     }
 
@@ -56,7 +60,7 @@ public class AdministratorFacade extends AnonymousFacade {
      * @param loginToken
      * @return True if succeeds or false if not.
      */
-    public boolean add_customer(Customer customer, LoginToken loginToken) {
+    public boolean add_customer(Customer customer, User user, LoginToken loginToken) {
         if (!this.loginToken.toString().equals(loginToken.toString())) {
             printAuthenticationError();
             return false;
@@ -65,6 +69,10 @@ public class AdministratorFacade extends AnonymousFacade {
             System.out.println("The fields 'phoneNumber' and/or 'creditCardNumber' must be numerical");
             return false;
         }
+        user.userRole = 1;
+        this.create_new_user(user);
+        user = this.userDao.getUserByUsername(user.username);
+        customer.userId = user.id;
         return this.customerDao.add(customer);
     }
 
@@ -75,11 +83,15 @@ public class AdministratorFacade extends AnonymousFacade {
      * @param loginToken
      * @return True if succeeds or false if not.
      */
-    public boolean add_administrator(Administrator administrator, LoginToken loginToken) {
+    public boolean add_administrator(Administrator administrator, User user, LoginToken loginToken) {
         if (!this.loginToken.toString().equals(loginToken.toString())) {
             printAuthenticationError();
             return false;
         }
+        user.userRole = 3;
+        this.create_new_user(user);
+        user = this.userDao.getUserByUsername(user.username);
+        customer.userId = user.id;
         return this.administratorDao.add(administrator);
     }
 
@@ -99,7 +111,11 @@ public class AdministratorFacade extends AnonymousFacade {
             System.out.println("country id must be a positive number");
             return false;
         }
-        return this.airlineCompanyDao.remove(airline);
+        if(this.airlineCompanyDao.remove(airline)){
+            this.userDao.remove(airline.userId);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -118,7 +134,11 @@ public class AdministratorFacade extends AnonymousFacade {
             System.out.println("The fields 'phoneNumber' and/or 'creditCardNumber' must be numerical");
             return false;
         }
-        return this.customerDao.remove(customer);
+        if(this.customerDao.remove(customer)){
+            this.userDao.remove(customer.userId);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -133,7 +153,11 @@ public class AdministratorFacade extends AnonymousFacade {
             printAuthenticationError();
             return false;
         }
-        return this.administratorDao.remove(administrator);
+        if(this.administratorDao.remove(administrator)){
+            this.userDao.remove(administrator.userId);
+            return true;
+        }
+        return false;
     }
 
 }
